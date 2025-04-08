@@ -37,7 +37,7 @@ server.tool(
       case 'NBA': {
         const nbaTeams = await api.nba.getTeams();
         const text = nbaTeams.data.map((team) => {
-          return `ID: ${team.id}\n`
+          return `Team ID: ${team.id}\n`
             + `Full Name: ${team.full_name}\n`
             + `Name: ${team.name}\n`
             + `Abbreviation: ${team.abbreviation}\n`
@@ -51,7 +51,7 @@ server.tool(
       case 'MLB': {
         const mlbTeams = await api.mlb.getTeams();
         const text = mlbTeams.data.map((team) => {
-          return `ID: ${team.id}\n`
+          return `Team ID: ${team.id}\n`
             + `Display Name: ${team.display_name}\n`
             + `Name: ${team.name}\n`
             + `Abbreviation: ${team.abbreviation}\n`
@@ -66,7 +66,7 @@ server.tool(
       case 'NFL': {
         const nlfTeams = await api.nfl.getTeams();
         const text = nlfTeams.data.map((team) => {
-          return `ID: ${team.id}\n`
+          return `Team ID: ${team.id}\n`
             + `Name: ${team.name}\n`
             + `Abbreviation: ${team.abbreviation}\n`
             + `Full Name: ${team.full_name}\n`
@@ -105,7 +105,7 @@ server.tool(
           cursor,
         });
         const text = nbaPlayers.data.map((player) => {
-          return `ID: ${player.id}\n`
+          return `Player ID: ${player.id}\n`
             + `First Name: ${player.first_name}\n`
             + `Last Name: ${player.last_name}\n`
             + `Position: ${player.position}\n`
@@ -134,7 +134,7 @@ server.tool(
           cursor,
         });
         const text = mlbPlayers.data.map((player) => {
-          return `ID: ${player.id}\n`
+          return `Player ID: ${player.id}\n`
             + `First Name: ${player.first_name}\n`
             + `Last Name: ${player.last_name}\n`
             + `Full Name: ${player.full_name}\n`
@@ -188,6 +188,141 @@ server.tool(
         let finalText = text;
         if (nflPlayers.meta?.next_cursor) {
           finalText += `\n\nPagination Information:\nnext_cursor: ${nflPlayers.meta.next_cursor}`;
+        }
+        return { content: [{ type: 'text', text: finalText }] };
+      }
+
+      default: {
+        return {
+          content: [{ type: 'text', text: `Unknown league: ${league}` }],
+          isError: true,
+        };
+      }
+    }
+  },
+);
+
+server.tool(
+  'get_games',
+  'Gets the list of games from one of the following leagues NBA, MLB, NFL',
+  {
+    league: z.enum(['NBA', 'MLB', 'NFL']),
+    dates: z.array(z.string()).optional().describe('Get games for a specific date, format: YYYY-MM-DD, optional'),
+    seasons: z.array(z.number()).optional().describe('Get games for a specific season, format: YYYY, optional'),
+    teamIds: z.array(z.number()).optional().describe('Get games for specific team IDs, optional'),
+    cursor: z.number().optional().describe('Cursor for pagination, the value should be next_cursor from previous call of get_players tool, optional'),
+  },
+  async ({ league, dates = undefined, seasons = undefined, teamIds = undefined, cursor = undefined }) => {
+    switch (league) {
+      case 'NBA': {
+        const nbaGames = await api.nba.getGames({
+          dates,
+          seasons,
+          team_ids: teamIds,
+          cursor,
+        });
+        const text = nbaGames.data.map((game) => {
+          return `Game ID: ${game.id}\n`
+            + `Date: ${game.date}\n`
+            + `Season: ${game.season}\n`
+            + `Status: ${game.status}\n`
+            + `Period: ${game.period}\n`
+            + `Time: ${game.time}\n`
+            + `Postseason: ${game.postseason}\n`
+            + `Score: ${game.home_team.full_name} ${game.home_team_score} - ${game.visitor_team_score} ${game.visitor_team.full_name}\n`
+            + `Home Team: ${game.home_team.full_name} (${game.home_team.abbreviation})\n`
+            + `Visitor Team: ${game.visitor_team.full_name} (${game.visitor_team.abbreviation})\n`;
+        }).join('\n-----\n');
+        let finalText = text;
+        if (nbaGames.meta?.next_cursor) {
+          finalText += `\n\nPagination Information:\nnext_cursor: ${nbaGames.meta.next_cursor}`;
+        }
+        return { content: [{ type: 'text', text: finalText }] };
+      }
+
+      case 'MLB': {
+        const mlbGames = await api.mlb.getGames({
+          dates,
+          seasons,
+          team_ids: teamIds,
+          cursor,
+        });
+        const text = mlbGames.data.map((game) => {
+          // Format inning scores nicely
+          const homeInnings = game.home_team_data.inning_scores.map((score, i) => `Inning ${i + 1}: ${score}`).join(', ');
+          const awayInnings = game.away_team_data.inning_scores.map((score, i) => `Inning ${i + 1}: ${score}`).join(', ');
+
+          return `Game ID: ${game.id}\n`
+            + `Date: ${game.date}\n`
+            + `Season: ${game.season}\n`
+            + `Postseason: ${game.postseason}\n`
+            + `Status: ${game.status}\n`
+            + `Venue: ${game.venue}\n`
+            + `Attendance: ${game.attendance}\n`
+            + `\nMatchup: ${game.home_team_name} vs ${game.away_team_name}\n`
+            + `\nHome Team: ${game.home_team.display_name} (${game.home_team.abbreviation})\n`
+            + `  League: ${game.home_team.league}\n`
+            + `  Division: ${game.home_team.division}\n`
+            + `  Runs: ${game.home_team_data.runs}\n`
+            + `  Hits: ${game.home_team_data.hits}\n`
+            + `  Errors: ${game.home_team_data.errors}\n`
+            + `  Inning Scores: ${homeInnings}\n`
+            + `\nAway Team: ${game.away_team.display_name} (${game.away_team.abbreviation})\n`
+            + `  League: ${game.away_team.league}\n`
+            + `  Division: ${game.away_team.division}\n`
+            + `  Runs: ${game.away_team_data.runs}\n`
+            + `  Hits: ${game.away_team_data.hits}\n`
+            + `  Errors: ${game.away_team_data.errors}\n`
+            + `  Inning Scores: ${awayInnings}\n`
+            + `\nFinal Score: ${game.home_team_name} ${game.home_team_data.runs} - ${game.away_team_data.runs} ${game.away_team_name}`;
+        }).join('\n\n-----\n\n');
+
+        let finalText = text;
+        if (mlbGames.meta?.next_cursor) {
+          finalText += `\n\nPagination Information:\nnext_cursor: ${mlbGames.meta.next_cursor}`;
+        }
+        return { content: [{ type: 'text', text: finalText }] };
+      }
+
+      case 'NFL': {
+        const nflGames = await api.nfl.getGames({
+          dates,
+          seasons,
+          team_ids: teamIds,
+          cursor,
+        });
+        const text = nflGames.data.map((game) => {
+          const winner = game.home_team_score > game.visitor_team_score
+            ? game.home_team.full_name
+            : game.visitor_team_score > game.home_team_score
+              ? game.visitor_team.full_name
+              : 'Tie';
+
+          return `Game ID: ${game.id}\n`
+            + `Date: ${game.date}\n`
+            + `Season: ${game.season}\n`
+            + `Week: ${game.week}\n`
+            + `Status: ${game.status}\n`
+            + `Postseason: ${game.postseason}\n`
+            + `Venue: ${game.venue}\n`
+            + `Summary: ${game.summary}\n`
+            + `\nMatchup: ${game.home_team.full_name} vs ${game.visitor_team.full_name}\n`
+            + `\nHome Team: ${game.home_team.full_name} (${game.home_team.abbreviation})\n`
+            + `  Location: ${game.home_team.location}\n`
+            + `  Conference: ${game.home_team.conference}\n`
+            + `  Division: ${game.home_team.division}\n`
+            + `  Score: ${game.home_team_score}\n`
+            + `\nVisitor Team: ${game.visitor_team.full_name} (${game.visitor_team.abbreviation})\n`
+            + `  Location: ${game.visitor_team.location}\n`
+            + `  Conference: ${game.visitor_team.conference}\n`
+            + `  Division: ${game.visitor_team.division}\n`
+            + `  Score: ${game.visitor_team_score}\n`
+            + `\nFinal Score: ${game.home_team.full_name} ${game.home_team_score} - ${game.visitor_team_score} ${game.visitor_team.full_name}\n`
+            + `Winner: ${winner}`;
+        }).join('\n\n-----\n\n');
+        let finalText = text;
+        if (nflGames.meta?.next_cursor) {
+          finalText += `\n\nPagination Information:\nnext_cursor: ${nflGames.meta.next_cursor}`;
         }
         return { content: [{ type: 'text', text: finalText }] };
       }
