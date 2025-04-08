@@ -3,6 +3,7 @@ import { BalldontlieAPI } from '@balldontlie/sdk';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import z from 'zod';
+import { formatMLBGame, formatNBAGame, formatNFLGame } from './utils';
 
 const server = new McpServer(
   {
@@ -222,16 +223,7 @@ server.tool(
           cursor,
         });
         const text = nbaGames.data.map((game) => {
-          return `Game ID: ${game.id}\n`
-            + `Date: ${game.date}\n`
-            + `Season: ${game.season}\n`
-            + `Status: ${game.status}\n`
-            + `Period: ${game.period}\n`
-            + `Time: ${game.time}\n`
-            + `Postseason: ${game.postseason}\n`
-            + `Score: ${game.home_team.full_name} ${game.home_team_score} - ${game.visitor_team_score} ${game.visitor_team.full_name}\n`
-            + `Home Team: ${game.home_team.full_name} (${game.home_team.abbreviation})\n`
-            + `Visitor Team: ${game.visitor_team.full_name} (${game.visitor_team.abbreviation})\n`;
+          return formatNBAGame(game);
         }).join('\n-----\n');
         let finalText = text;
         if (nbaGames.meta?.next_cursor) {
@@ -248,33 +240,7 @@ server.tool(
           cursor,
         });
         const text = mlbGames.data.map((game) => {
-          // Format inning scores nicely
-          const homeInnings = game.home_team_data.inning_scores.map((score, i) => `Inning ${i + 1}: ${score}`).join(', ');
-          const awayInnings = game.away_team_data.inning_scores.map((score, i) => `Inning ${i + 1}: ${score}`).join(', ');
-
-          return `Game ID: ${game.id}\n`
-            + `Date: ${game.date}\n`
-            + `Season: ${game.season}\n`
-            + `Postseason: ${game.postseason}\n`
-            + `Status: ${game.status}\n`
-            + `Venue: ${game.venue}\n`
-            + `Attendance: ${game.attendance}\n`
-            + `\nMatchup: ${game.home_team_name} vs ${game.away_team_name}\n`
-            + `\nHome Team: ${game.home_team.display_name} (${game.home_team.abbreviation})\n`
-            + `  League: ${game.home_team.league}\n`
-            + `  Division: ${game.home_team.division}\n`
-            + `  Runs: ${game.home_team_data.runs}\n`
-            + `  Hits: ${game.home_team_data.hits}\n`
-            + `  Errors: ${game.home_team_data.errors}\n`
-            + `  Inning Scores: ${homeInnings}\n`
-            + `\nAway Team: ${game.away_team.display_name} (${game.away_team.abbreviation})\n`
-            + `  League: ${game.away_team.league}\n`
-            + `  Division: ${game.away_team.division}\n`
-            + `  Runs: ${game.away_team_data.runs}\n`
-            + `  Hits: ${game.away_team_data.hits}\n`
-            + `  Errors: ${game.away_team_data.errors}\n`
-            + `  Inning Scores: ${awayInnings}\n`
-            + `\nFinal Score: ${game.home_team_name} ${game.home_team_data.runs} - ${game.away_team_data.runs} ${game.away_team_name}`;
+          return formatMLBGame(game);
         }).join('\n\n-----\n\n');
 
         let finalText = text;
@@ -292,33 +258,7 @@ server.tool(
           cursor,
         });
         const text = nflGames.data.map((game) => {
-          const winner = game.home_team_score > game.visitor_team_score
-            ? game.home_team.full_name
-            : game.visitor_team_score > game.home_team_score
-              ? game.visitor_team.full_name
-              : 'Tie';
-
-          return `Game ID: ${game.id}\n`
-            + `Date: ${game.date}\n`
-            + `Season: ${game.season}\n`
-            + `Week: ${game.week}\n`
-            + `Status: ${game.status}\n`
-            + `Postseason: ${game.postseason}\n`
-            + `Venue: ${game.venue}\n`
-            + `Summary: ${game.summary}\n`
-            + `\nMatchup: ${game.home_team.full_name} vs ${game.visitor_team.full_name}\n`
-            + `\nHome Team: ${game.home_team.full_name} (${game.home_team.abbreviation})\n`
-            + `  Location: ${game.home_team.location}\n`
-            + `  Conference: ${game.home_team.conference}\n`
-            + `  Division: ${game.home_team.division}\n`
-            + `  Score: ${game.home_team_score}\n`
-            + `\nVisitor Team: ${game.visitor_team.full_name} (${game.visitor_team.abbreviation})\n`
-            + `  Location: ${game.visitor_team.location}\n`
-            + `  Conference: ${game.visitor_team.conference}\n`
-            + `  Division: ${game.visitor_team.division}\n`
-            + `  Score: ${game.visitor_team_score}\n`
-            + `\nFinal Score: ${game.home_team.full_name} ${game.home_team_score} - ${game.visitor_team_score} ${game.visitor_team.full_name}\n`
-            + `Winner: ${winner}`;
+          return formatNFLGame(game);
         }).join('\n\n-----\n\n');
         let finalText = text;
         if (nflGames.meta?.next_cursor) {
@@ -327,6 +267,49 @@ server.tool(
         return { content: [{ type: 'text', text: finalText }] };
       }
 
+      default: {
+        return {
+          content: [{ type: 'text', text: `Unknown league: ${league}` }],
+          isError: true,
+        };
+      }
+    }
+  },
+);
+
+server.tool(
+  'get_game',
+  'Get a specific game from one of the following leagues NBA, MLB, NFL',
+  {
+    league: z.enum(['NBA', 'MLB', 'NFL']),
+    gameId: z.number().describe('Game ID to get the game for, the value should be Game ID from previous call of get_games tool'),
+  },
+  async ({ league, gameId }) => {
+    switch (league) {
+      case 'NBA': {
+        const nbaGame = await api.nba.getGame(gameId);
+        if (nbaGame.data) {
+          const text = formatNBAGame(nbaGame.data);
+          return { content: [{ type: 'text', text }] };
+        }
+        return { content: [{ type: 'text', text: `Game ID ${gameId} not found` }], isError: true };
+      }
+      case 'MLB': {
+        const mlbGame = await api.mlb.getGame(gameId);
+        if (mlbGame.data) {
+          const text = formatMLBGame(mlbGame.data);
+          return { content: [{ type: 'text', text }] };
+        }
+        return { content: [{ type: 'text', text: `Game ID ${gameId} not found` }], isError: true };
+      }
+      case 'NFL': {
+        const nflGame = await api.nfl.getGame(gameId);
+        if (nflGame.data) {
+          const text = formatNFLGame(nflGame.data);
+          return { content: [{ type: 'text', text }] };
+        }
+        return { content: [{ type: 'text', text: `Game ID ${gameId} not found` }], isError: true };
+      }
       default: {
         return {
           content: [{ type: 'text', text: `Unknown league: ${league}` }],
