@@ -211,7 +211,7 @@ server.tool(
     dates: z.array(z.string()).optional().describe('Get games for a specific date, format: YYYY-MM-DD, optional'),
     seasons: z.array(z.number()).optional().describe('Get games for a specific season, format: YYYY, optional'),
     teamIds: z.array(z.number()).optional().describe('Get games for specific team IDs, optional'),
-    cursor: z.number().optional().describe('Cursor for pagination, the value should be next_cursor from previous call of get_players tool, optional'),
+    cursor: z.number().optional().describe('Cursor for pagination, the value should be next_cursor from previous call of get_games tool, optional'),
   },
   async ({ league, dates = undefined, seasons = undefined, teamIds = undefined, cursor = undefined }) => {
     switch (league) {
