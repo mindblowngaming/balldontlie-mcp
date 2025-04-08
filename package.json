@@ -1,7 +1,7 @@
 {
   "name": "balldontlie-mcp",
   "version": "0.5.0",
-  "description": "A MCP Server providing sports data for NBA, NFL, EPL",
+  "description": "A MCP Server providing sports data for NBA, NFL, MLB",
   "author": "mike.chao.one@gmail.com",
   "license": "ISC",
   "main": "dist/index.js",

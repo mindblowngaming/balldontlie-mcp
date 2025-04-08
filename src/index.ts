@@ -85,6 +85,121 @@ server.tool(
   },
 );
 
+server.tool(
+  `get_players`,
+  `Gets the list of players from one of the following leagues NBA, MLB, NFL`,
+  {
+    league: z.enum(['NBA', 'MLB', 'NFL']),
+    firstName: z.string().optional().describe('First name of the player to search for, optional'),
+    lastName: z.string().optional().describe('Last name of the player to search for, optional'),
+    cursor: z.number().optional().describe('Cursor for pagination, the value should be next_cursor from previous call of get_players tool, optional'),
+  },
+  async ({ league, firstName = undefined, lastName = undefined, cursor = undefined }) => {
+    switch (league) {
+      case 'NBA': {
+        const nbaPlayers = await api.nba.getPlayers({
+          first_name: firstName,
+          last_name: lastName,
+          cursor,
+        });
+        const text = nbaPlayers.data.map((player) => {
+          return `ID: ${player.id}\n`
+            + `First Name: ${player.first_name}\n`
+            + `Last Name: ${player.last_name}\n`
+            + `Position: ${player.position}\n`
+            + `Height: ${player.height}\n`
+            + `Weight: ${player.weight}\n`
+            + `Jersey Number: ${player.jersey_number}\n`
+            + `College: ${player.college}\n`
+            + `Country: ${player.country}\n`
+            + `Draft Year: ${player.draft_year}\n`
+            + `Draft Round: ${player.draft_round}\n`
+            + `Draft Number: ${player.draft_number}\n`
+            + `Team ID: ${player.team.id}\n`
+            + `Team Name: ${player.team.name}\n`;
+        }).join('\n-----\n');
+        let finalText = text;
+        if (nbaPlayers.meta?.next_cursor) {
+          finalText += `\n\nPagination Information:\nnext_cursor: ${nbaPlayers.meta.next_cursor}`;
+        }
+        return { content: [{ type: 'text', text: finalText }] };
+      }
+
+      case 'MLB': {
+        const mlbPlayers = await api.mlb.getPlayers({
+          first_name: firstName,
+          last_name: lastName,
+          cursor,
+        });
+        const text = mlbPlayers.data.map((player) => {
+          return `ID: ${player.id}\n`
+            + `First Name: ${player.first_name}\n`
+            + `Last Name: ${player.last_name}\n`
+            + `Full Name: ${player.full_name}\n`
+            + `Debut Year: ${player.debut_year}\n`
+            + `Jersey: ${player.jersey}\n`
+            + `College: ${player.college}\n`
+            + `Position: ${player.position}\n`
+            + `Active: ${player.active}\n`
+            + `Birth Place: ${player.birth_place}\n`
+            + `Date of Birth: ${player.dob}\n`
+            + `Age: ${player.age}\n`
+            + `Height: ${player.height}\n`
+            + `Weight: ${player.weight}\n`
+            + `Draft: ${player.draft}\n`
+            + `Bats/Throws: ${player.bats_throws}\n`
+            + `Team ID: ${player.team.id}\n`
+            + `Team Name: ${player.team.name}\n`;
+        }).join('\n-----\n');
+        let finalText = text;
+        if (mlbPlayers.meta?.next_cursor) {
+          finalText += `\n\nPagination Information:\nnext_cursor: ${mlbPlayers.meta.next_cursor}`;
+        }
+        return { content: [{ type: 'text', text: finalText }] };
+      }
+
+      case 'NFL': {
+        const nflPlayers = await api.nfl.getPlayers({
+          first_name: firstName,
+          last_name: lastName,
+          cursor,
+        });
+        const text = nflPlayers.data.map((player) => {
+          return `ID: ${player.id}\n`
+            + `First Name: ${player.first_name}\n`
+            + `Last Name: ${player.last_name}\n`
+            + `Position: ${player.position}\n`
+            + `Position Abbreviation: ${player.position_abbreviation}\n`
+            + `Height: ${player.height}\n`
+            + `Weight: ${player.weight}\n`
+            + `Jersey Number: ${player.jersey_number}\n`
+            + `College: ${player.college}\n`
+            + `Experience: ${player.experience}\n`
+            + `Age: ${player.age}\n`
+          + `Team ID: ${player.team.id}\n`
+          + `Team Name: ${player.team.name}\n`
+          + `Team Location: ${player.team.location}\n`
+          + `Team Abbreviation: ${player.team.abbreviation}\n`
+          + `Team Conference: ${player.team.conference}\n`
+          + `Team Division: ${player.team.division}\n`;
+        }).join('\n-----\n');
+        let finalText = text;
+        if (nflPlayers.meta?.next_cursor) {
+          finalText += `\n\nPagination Information:\nnext_cursor: ${nflPlayers.meta.next_cursor}`;
+        }
+        return { content: [{ type: 'text', text: finalText }] };
+      }
+
+      default: {
+        return {
+          content: [{ type: 'text', text: `Unknown league: ${league}` }],
+          isError: true,
+        };
+      }
+    }
+  },
+);
+
 async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
