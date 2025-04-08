@@ -31,7 +31,7 @@ const api = new BalldontlieAPI({ apiKey: BALLDONTLIE_API_KEY });
 
 server.tool(
   'get_teams',
-  'Gets the list of team from one of the following leagues EPL, NBA, MLB, NFL',
+  'Gets the list of team from one of the following leagues NBA, MLB, NFL',
   {
     league: z.enum(['NBA', 'MLB', 'NFL']),
   },
