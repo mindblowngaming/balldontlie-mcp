@@ -49,7 +49,7 @@ Add this to your `claude_desktop_config.json`:
 ```json
 {
   "mcp-servers": {
-    "brave-search": {
+    "balldontlie": {
       "command": "npx",
       "args": [
         "-y",
