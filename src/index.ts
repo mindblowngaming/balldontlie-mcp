@@ -37,7 +37,8 @@ server.tool(
       case 'NBA': {
         const nbaTeams = await api.nba.getTeams();
         const text = nbaTeams.data.map((team) => {
-          return `Full Name: ${team.full_name}\n`
+          return `ID: ${team.id}\n`
+            + `Full Name: ${team.full_name}\n`
             + `Name: ${team.name}\n`
             + `Abbreviation: ${team.abbreviation}\n`
             + `City: ${team.city}\n`
@@ -50,7 +51,8 @@ server.tool(
       case 'MLB': {
         const mlbTeams = await api.mlb.getTeams();
         const text = mlbTeams.data.map((team) => {
-          return `Display Name: ${team.display_name}\n`
+          return `ID: ${team.id}\n`
+            + `Display Name: ${team.display_name}\n`
             + `Name: ${team.name}\n`
             + `Abbreviation: ${team.abbreviation}\n`
             + `Location: ${team.location}\n`
@@ -64,7 +66,8 @@ server.tool(
       case 'NFL': {
         const nlfTeams = await api.nfl.getTeams();
         const text = nlfTeams.data.map((team) => {
-          return `Name: ${team.name}\n`
+          return `ID: ${team.id}\n`
+            + `Name: ${team.name}\n`
             + `Abbreviation: ${team.abbreviation}\n`
             + `Full Name: ${team.full_name}\n`
             + `Location: ${team.location}\n`
