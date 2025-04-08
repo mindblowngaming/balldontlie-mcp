@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import process from 'node:process';
 import { BalldontlieAPI } from '@balldontlie/sdk';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
