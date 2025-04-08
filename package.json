@@ -1,9 +1,9 @@
 {
   "name": "balldontlie-mcp",
   "version": "0.5.0",
-  "description": "A MCP Server providing sports data for NBA, NFL, MLB",
+  "description": "An MCP Server implementation that integrates the Balldontlie API, to provide information about players, teams and games for the NBA, NFL and MLB",
   "author": "mike.chao.one@gmail.com",
-  "license": "ISC",
+  "license": "MIT",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc && shx chmod +x dist/*.js",
