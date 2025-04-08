@@ -1,4 +1,3 @@
-import type { Tool } from '@modelcontextprotocol/sdk/types.js';
 import process from 'node:process';
 import { BalldontlieAPI } from '@balldontlie/sdk';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
@@ -176,12 +175,12 @@ server.tool(
             + `College: ${player.college}\n`
             + `Experience: ${player.experience}\n`
             + `Age: ${player.age}\n`
-          + `Team ID: ${player.team.id}\n`
-          + `Team Name: ${player.team.name}\n`
-          + `Team Location: ${player.team.location}\n`
-          + `Team Abbreviation: ${player.team.abbreviation}\n`
-          + `Team Conference: ${player.team.conference}\n`
-          + `Team Division: ${player.team.division}\n`;
+            + `Team ID: ${player.team.id}\n`
+            + `Team Name: ${player.team.name}\n`
+            + `Team Location: ${player.team.location}\n`
+            + `Team Abbreviation: ${player.team.abbreviation}\n`
+            + `Team Conference: ${player.team.conference}\n`
+            + `Team Division: ${player.team.division}\n`;
         }).join('\n-----\n');
         let finalText = text;
         if (nflPlayers.meta?.next_cursor) {
