@@ -3,7 +3,7 @@ import { BalldontlieAPI } from '@balldontlie/sdk';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import z from 'zod';
-import { formatMLBGame, formatNBAGame, formatNFLGame } from './utils';
+import { formatMLBGame, formatNBAGame, formatNFLGame } from './utils.js';
 
 const server = new McpServer(
   {
