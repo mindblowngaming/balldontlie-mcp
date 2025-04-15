@@ -1,5 +1,7 @@
 # Balldontlie MCP Server
 
+[![smithery badge](https://smithery.ai/badge/@mikechao/balldontlie-mcp)](https://smithery.ai/server/@mikechao/balldontlie-mcp)
+
 An MCP Server implementation that integrates the [Balldontlie API](https://www.balldontlie.io/), to provide information about players, teams and games for the NBA, NFL and MLB.
 
 ## Tools
@@ -41,6 +43,14 @@ An MCP Server implementation that integrates the [Balldontlie API](https://www.b
 
 1. Sign up for account at [Balldontlie.io](https://www.balldontlie.io/)
 2. The free plan is enough for this MCP Server
+
+### Installing via Smithery
+
+To install balldontlie-mcp for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@mikechao/balldontlie-mcp):
+
+```bash
+npx -y @smithery/cli install @mikechao/balldontlie-mcp --client claude
+```
 
 ### Usage with Claude Desktop
 
