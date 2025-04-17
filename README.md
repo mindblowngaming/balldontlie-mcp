@@ -2,6 +2,10 @@
 
 [![smithery badge](https://smithery.ai/badge/@mikechao/balldontlie-mcp)](https://smithery.ai/server/@mikechao/balldontlie-mcp)
 
+<a href="https://glama.ai/mcp/servers/@mikechao/balldontlie-mcp">
+  <img width="380" height="200" src="https://glama.ai/mcp/servers/@mikechao/balldontlie-mcp/badge" alt="balldontlie-mcp MCP server" />
+</a>
+
 An MCP Server implementation that integrates the [Balldontlie API](https://www.balldontlie.io/), to provide information about players, teams and games for the NBA, NFL and MLB.
 
 ## Tools
