@@ -33,8 +33,13 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc && shx chmod +x dist/*.js",
-    "prepare": "npm run build"
+    "clean": "shx rm -rf dist && shx mkdir dist",
+    "build": "npm run clean && tsc && shx chmod +x dist/*.js",
+    "prepare": "npm run build",
+    "lint": "eslint . --ext .ts,.js,.mjs,.cjs --fix",
+    "lint:check": "eslint . --ext .ts,.js,.mjs,.cjs",
+    "typecheck": "tsc --noEmit",
+    "check": "npm run lint:check && npm run typecheck"
   },
   "dependencies": {
     "@balldontlie/sdk": "^1.2.2",
