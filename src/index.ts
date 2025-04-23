@@ -20,6 +20,8 @@ const server = new McpServer(
   },
 );
 
+export const leagueEnum = z.enum(['NBA', 'MLB', 'NFL']);
+
 // #region API Key Check and setup
 const BALLDONTLIE_API_KEY = process.env.BALLDONTLIE_API_KEY;
 if (!BALLDONTLIE_API_KEY) {
@@ -36,7 +38,7 @@ server.tool(
   'get_teams',
   'Gets the list of team from one of the following leagues NBA, MLB, NFL',
   {
-    league: z.enum(['NBA', 'MLB', 'NFL']),
+    league: leagueEnum,
   },
   async ({ league }) => {
     switch (league) {
@@ -97,7 +99,7 @@ server.tool(
   `get_players`,
   `Gets the list of players from one of the following leagues NBA, MLB, NFL`,
   {
-    league: z.enum(['NBA', 'MLB', 'NFL']),
+    league: leagueEnum,
     firstName: z.string().optional().describe('First name of the player to search for, optional'),
     lastName: z.string().optional().describe('Last name of the player to search for, optional'),
     cursor: z.number().optional().describe('Cursor for pagination, the value should be next_cursor from previous call of get_players tool, optional'),
@@ -212,7 +214,7 @@ server.tool(
   'get_games',
   'Gets the list of games from one of the following leagues NBA, MLB, NFL',
   {
-    league: z.enum(['NBA', 'MLB', 'NFL']),
+    league: leagueEnum,
     dates: z.array(z.string()).optional().describe('Get games for a range of dates, format: YYYY-MM-DD, optional'),
     seasons: z.array(z.number()).optional().describe('Get games for a specific season, format: YYYY, optional'),
     teamIds: z.array(z.number()).optional().describe('Get games for specific team IDs, optional'),
@@ -286,7 +288,7 @@ server.tool(
   'get_game',
   'Get a specific game from one of the following leagues NBA, MLB, NFL',
   {
-    league: z.enum(['NBA', 'MLB', 'NFL']),
+    league: leagueEnum,
     gameId: z.number().describe('Game ID to get the game for, the value should be Game ID from previous call of get_games tool'),
   },
   async ({ league, gameId }) => {
