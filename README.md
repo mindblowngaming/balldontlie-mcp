@@ -38,8 +38,8 @@ An MCP Server implementation that integrates the [Balldontlie API](https://www.b
 
   - Get a specific game from one of the following leagues NBA, MLB, NFL
   - Inputs:
-      - `league` (enum ['NBA', 'NFL', 'MLB']): The sports league to get the game for
-      - `gameId` (number): The id of the game from the get_games tool
+    - `league` (enum ['NBA', 'NFL', 'MLB']): The sports league to get the game for
+    - `gameId` (number): The id of the game from the get_games tool
 
 ## Configuration
 
@@ -82,10 +82,10 @@ Add this to your `claude_desktop_config.json`:
 ```yaml
 mcpServers:
   balldontlie:
-     command: sh
-     args:
-       - "-c"
-       - "BALLDONTLIE_API_KEY=your-api-key-here npx -y balldontlie-mcp"
+    command: sh
+    args:
+      - -c
+      - BALLDONTLIE_API_KEY=your-api-key-here npx -y balldontlie-mcp
 ```
 
 ## License
