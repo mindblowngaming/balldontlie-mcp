@@ -5,7 +5,7 @@ import { BalldontlieAPI } from '@balldontlie/sdk';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import z from 'zod';
-import { getWeeklySchedulePrompt } from './prompts.js';
+import { getSchedulePrompt } from './prompts.js';
 import { formatMLBGame, formatNBAGame, formatNFLGame } from './utils.js';
 
 const server = new McpServer(
@@ -331,8 +331,8 @@ server.tool(
 // #endregion Tool Definitions
 
 server.prompt(
-  'weekly_schedule',
-  'Generates a weekly schedule for a league',
+  'schedule_generator',
+  'Generates a schedule for a league from a given start date to end date',
   {
     league: leagueEnum,
     startDate: z.string().describe('Start date for the schedule, format: YYYY-MM-DD'),
@@ -344,7 +344,7 @@ server.prompt(
         role: 'user',
         content: {
           type: 'text',
-          text: getWeeklySchedulePrompt(league, startDate, endDate),
+          text: getSchedulePrompt(league, startDate, endDate),
         },
       },
     ] };
