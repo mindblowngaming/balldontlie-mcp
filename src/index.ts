@@ -5,6 +5,7 @@ import { BalldontlieAPI } from '@balldontlie/sdk';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import z from 'zod';
+import { getWeeklySchedulePrompt } from './prompts.js';
 import { formatMLBGame, formatNBAGame, formatNFLGame } from './utils.js';
 
 const server = new McpServer(
@@ -20,7 +21,8 @@ const server = new McpServer(
   },
 );
 
-export const leagueEnum = z.enum(['NBA', 'MLB', 'NFL']);
+const leagueEnum = z.enum(['NBA', 'MLB', 'NFL']);
+export type LeagueEnum = z.infer<typeof leagueEnum>;
 
 // #region API Key Check and setup
 const BALLDONTLIE_API_KEY = process.env.BALLDONTLIE_API_KEY;
@@ -327,6 +329,27 @@ server.tool(
   },
 );
 // #endregion Tool Definitions
+
+server.prompt(
+  'weekly_schedule',
+  'Generates a weekly schedule for a league',
+  {
+    league: leagueEnum,
+    startDate: z.string().describe('Start date for the schedule, format: YYYY-MM-DD'),
+    endDate: z.string().describe('End date for the schedule, format: YYYY-MM-DD'),
+  },
+  async ({ league, startDate, endDate }) => {
+    return { messages: [
+      {
+        role: 'user',
+        content: {
+          type: 'text',
+          text: getWeeklySchedulePrompt(league, startDate, endDate),
+        },
+      },
+    ] };
+  },
+);
 
 async function main() {
   const transport = new StdioServerTransport();
