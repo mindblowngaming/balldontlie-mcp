@@ -20,6 +20,7 @@ const server = new McpServer(
   },
 );
 
+// #region API Key Check and setup
 const BALLDONTLIE_API_KEY = process.env.BALLDONTLIE_API_KEY;
 if (!BALLDONTLIE_API_KEY) {
   console.error('Error: BALLDONTLIE_API_KEY environment variable is not set.');
@@ -28,7 +29,9 @@ if (!BALLDONTLIE_API_KEY) {
 }
 
 const api = new BalldontlieAPI({ apiKey: BALLDONTLIE_API_KEY });
+// #endregion API Key Check and setup
 
+// #region Tool Definitions
 server.tool(
   'get_teams',
   'Gets the list of team from one of the following leagues NBA, MLB, NFL',
@@ -321,6 +324,7 @@ server.tool(
     }
   },
 );
+// #endregion Tool Definitions
 
 async function main() {
   const transport = new StdioServerTransport();
