@@ -210,7 +210,7 @@ server.tool(
   'Gets the list of games from one of the following leagues NBA, MLB, NFL',
   {
     league: z.enum(['NBA', 'MLB', 'NFL']),
-    dates: z.array(z.string()).optional().describe('Get games for a specific date, format: YYYY-MM-DD, optional'),
+    dates: z.array(z.string()).optional().describe('Get games for a range of dates, format: YYYY-MM-DD, optional'),
     seasons: z.array(z.number()).optional().describe('Get games for a specific season, format: YYYY, optional'),
     teamIds: z.array(z.number()).optional().describe('Get games for specific team IDs, optional'),
     cursor: z.number().optional().describe('Cursor for pagination, the value should be next_cursor from previous call of get_games tool, optional'),
