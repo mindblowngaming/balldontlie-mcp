@@ -41,6 +41,14 @@ An MCP Server implementation that integrates the [Balldontlie API](https://www.b
     - `league` (enum ['NBA', 'NFL', 'MLB']): The sports league to get the game for
     - `gameId` (number): The id of the game from the get_games tool
 
+## Prompts
+
+- **schedule_generator**
+
+Given a league (NBA, MLB, NFL), a starting date and ending date generates an interactive artifact in Claude Desktop.
+
+![claude desktop example](https://mikechao.github.io/images/schedule_geneartor_prompt.webp)
+
 ## Configuration
 
 ### Getting an API Key
