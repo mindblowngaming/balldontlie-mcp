@@ -1,8 +1,8 @@
-[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/mikechao-balldontlie-mcp-badge.png)](https://mseep.ai/app/mikechao-balldontlie-mcp)
-
 # Balldontlie MCP Server
 
 [![smithery badge](https://smithery.ai/badge/@mikechao/balldontlie-mcp)](https://smithery.ai/server/@mikechao/balldontlie-mcp)
+
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/mikechao-balldontlie-mcp-badge.png)](https://mseep.ai/app/mikechao-balldontlie-mcp)
 
 <a href="https://glama.ai/mcp/servers/@mikechao/balldontlie-mcp">
   <img width="380" height="200" src="https://glama.ai/mcp/servers/@mikechao/balldontlie-mcp/badge" alt="balldontlie-mcp MCP server" />
