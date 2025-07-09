@@ -1,7 +1,7 @@
 {
   "name": "balldontlie-mcp",
   "type": "module",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "private": false,
   "description": "An MCP Server implementation that integrates the Balldontlie API, to provide information about players, teams and games for the NBA, NFL and MLB",
   "author": "mike.chao.one@gmail.com",
