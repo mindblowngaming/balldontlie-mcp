@@ -58,6 +58,13 @@ Given a league (NBA, MLB, NFL), a starting date and ending date generates an int
 1. Sign up for account at [Balldontlie.io](https://www.balldontlie.io/)
 2. The free plan is enough for this MCP Server
 
+### Installing using Desktop Extension (DXT)
+
+1. Download the `dxt` file from the [Releases](https://github.com/mikechao/balldontlie-mcp/releases)
+2. Open it with Claude Desktop
+   or
+   Go to File -> Settings -> Extensions and drag the .DXT file to the window to install it
+
 ### Installing via Smithery
 
 To install balldontlie-mcp for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@mikechao/balldontlie-mcp):
