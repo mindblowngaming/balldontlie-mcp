@@ -14,13 +14,13 @@ An MCP Server implementation that integrates the [Balldontlie API](https://www.b
 
 - **get_teams**
 
-  - Get a list of teams for the NBA, NFL or MLB
+  - Gets the list of team from one of the following leagues NBA (National Basketball Association), MLB (Major League Baseball), NFL (National Football League)
   - Inputs:
     - `league` (enum ['NBA', 'NFL', 'MLB']): The sports league to get teams for
 
 - **get_players**
 
-  - Gets a list of players for the NBA, NFL or MLB
+  - Gets the list of players from one of the following leagues NBA (National Basketball Association), MLB (Major League Baseball), NFL (National Football League)
   - Inputs:
     - `league` (enum ['NBA', 'NFL', 'MLB']): The sports league to get players for
     - `firstName` (string, optional): The first name of the player to search for
@@ -29,7 +29,7 @@ An MCP Server implementation that integrates the [Balldontlie API](https://www.b
 
 - **get_games**
 
-  - Gets the list of games for the NBA, NFL or MLB
+  - Gets the list of games from one of the following leagues NBA (National Basketball Association), MLB (Major League Baseball), NFL (National Football League)
   - Inputs:
     - `league` (enum ['NBA', 'NFL', 'MLB']): The sports league to get games for
     - `dates` (string[], optional): Get games for specific dates, format: YYYY-MM-DD
@@ -38,7 +38,7 @@ An MCP Server implementation that integrates the [Balldontlie API](https://www.b
 
 - **get_game**
 
-  - Get a specific game from one of the following leagues NBA, MLB, NFL
+  - Get a specific game from one of the following leagues NBA (National Basketball Association), MLB (Major League Baseball), NFL (National Football League)
   - Inputs:
     - `league` (enum ['NBA', 'NFL', 'MLB']): The sports league to get the game for
     - `gameId` (number): The id of the game from the get_games tool
