@@ -51,6 +51,16 @@ Given a league (NBA, MLB, NFL), a starting date and ending date generates an int
 
 ![claude desktop example](https://mikechao.github.io/images/schedule_geneartor_prompt.webp)
 
+## Sample queries
+
+With this MCP Server installed you can ask Claude or other LLM questions like the following.
+
+```
+Show me today's baseball games.
+Can you find football players with the last name Purdy?
+How many NBA players have the last name Ming?
+```
+
 ## Configuration
 
 ### Getting an API Key
