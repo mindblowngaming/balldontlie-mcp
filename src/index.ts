@@ -38,7 +38,7 @@ const api = new BalldontlieAPI({ apiKey: BALLDONTLIE_API_KEY });
 // #region Tool Definitions
 server.tool(
   'get_teams',
-  'Gets the list of team from one of the following leagues NBA, MLB, NFL',
+  'Gets the list of team from one of the following leagues NBA (National Basketball Association), MLB (Major League Baseball), NFL (National Football League)',
   {
     league: leagueEnum,
   },
@@ -99,7 +99,7 @@ server.tool(
 
 server.tool(
   `get_players`,
-  `Gets the list of players from one of the following leagues NBA, MLB, NFL`,
+  `Gets the list of players from one of the following leagues NBA (National Basketball Association), MLB (Major League Baseball), NFL (National Football League)`,
   {
     league: leagueEnum,
     firstName: z.string().optional().describe('First name of the player to search for, optional'),
@@ -214,7 +214,7 @@ server.tool(
 
 server.tool(
   'get_games',
-  'Gets the list of games from one of the following leagues NBA, MLB, NFL',
+  'Gets the list of games from one of the following leagues NBA (National Basketball Association), MLB (Major League Baseball), NFL (National Football League)',
   {
     league: leagueEnum,
     dates: z.array(z.string()).optional().describe('Get games for a range of dates, format: YYYY-MM-DD, optional'),
@@ -288,7 +288,7 @@ server.tool(
 
 server.tool(
   'get_game',
-  'Get a specific game from one of the following leagues NBA, MLB, NFL',
+  'Get a specific game from one of the following leagues NBA (National Basketball Association), MLB (Major League Baseball), NFL (National Football League)',
   {
     league: leagueEnum,
     gameId: z.number().describe('Game ID to get the game for, the value should be Game ID from previous call of get_games tool'),
