@@ -2,6 +2,8 @@
 
 [![smithery badge](https://smithery.ai/badge/@mikechao/balldontlie-mcp)](https://smithery.ai/server/@mikechao/balldontlie-mcp)
 
+[![Verified on MseeP](https://mseep.ai/badge.svg)](https://mseep.ai/app/07e29bcd-3fb7-46e6-b4b9-8908b3ef18f2)
+
 [![MseeP.ai Security Assessment Badge](https://mseep.net/pr/mikechao-balldontlie-mcp-badge.png)](https://mseep.ai/app/mikechao-balldontlie-mcp)
 
 <a href="https://glama.ai/mcp/servers/@mikechao/balldontlie-mcp">
